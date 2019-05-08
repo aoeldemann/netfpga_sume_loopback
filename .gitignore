@@ -1,0 +1,6 @@
+vivado*.jou
+vivado*.log
+/project/
+/ip/*/component.xml
+/ip/*/ip_project/
+/ip/*/xgui/
