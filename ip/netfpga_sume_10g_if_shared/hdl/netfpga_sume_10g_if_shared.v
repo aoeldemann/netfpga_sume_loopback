@@ -35,12 +35,12 @@ module netfpga_sume_10g_if_shared (
   input wire           s_axis_tlast,
   input wire [7:0]     s_axis_tkeep,
   output wire          s_axis_tready,
+  output wire          m_axis_tuser,
 
   output wire [63:0]   m_axis_tdata,
   output wire          m_axis_tvalid,
   output wire          m_axis_tlast,
   output wire [7:0]    m_axis_tkeep,
-  input wire           m_axis_tready,
 
   input wire           refclk_n,
   input wire           refclk_p,
@@ -114,7 +114,7 @@ module netfpga_sume_10g_if_shared (
     .m_axis_rx_tdata(m_axis_tdata),
     .m_axis_rx_tkeep(m_axis_tkeep),
     .m_axis_rx_tlast(m_axis_tlast),
-    .m_axis_rx_tuser(),
+    .m_axis_rx_tuser(m_axis_tuser),
     .m_axis_rx_tvalid(m_axis_tvalid),
     .tx_statistics_valid(),
     .tx_statistics_vector(),

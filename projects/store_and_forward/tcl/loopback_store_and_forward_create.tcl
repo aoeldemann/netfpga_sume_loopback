@@ -28,10 +28,10 @@
 # Creates Vivado project.
 
 # set some basic project infos
-set design netfpga_sume_loopback
+set design loopback_store_and_forward
 set device xc7vx690t-3-ffg1761
 set proj_dir ./project
-set repo_dir ./ip
+set repo_dir ./../../ip
 
 # set current directory
 set current_dir [pwd]
@@ -61,6 +61,12 @@ create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:netfpga_sume_10g_if_shared:1.00 if_0
 create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:netfpga_sume_10g_if:1.00 if_1
 create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:netfpga_sume_10g_if:1.00 if_2
 create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:netfpga_sume_10g_if:1.00 if_3
+
+# instantiate frame buffer cores
+create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:frame_buffer:1.00 frame_buffer_0
+create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:frame_buffer:1.00 frame_buffer_1
+create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:frame_buffer:1.00 frame_buffer_2
+create_bd_cell -type ip -vlnv TUMLIS:TUMLIS:frame_buffer:1.00 frame_buffer_3
 
 # create external ports
 source ./tcl/${design}_create_bd_ports.tcl

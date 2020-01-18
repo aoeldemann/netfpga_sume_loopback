@@ -25,27 +25,18 @@
 #
 # Description:
 #
-# Synthesizes design.
+# Creates project-wide IP cores.
 
-# set some basic project infos
-set design netfpga_sume_loopback
-set proj_dir ./project
+create_ip -name axi_10g_ethernet -vendor xilinx.com -library ip -version 3.1 \
+  -module_name axi_10g_ethernet_shared
+set_property -dict [list CONFIG.Management_Interface {false} \
+  CONFIG.base_kr {BASE-R} CONFIG.SupportLevel {1} CONFIG.autonegotiation {0} \
+  CONFIG.fec {0} CONFIG.Statistics_Gathering {0} ] \
+  [get_ips axi_10g_ethernet_shared]
 
-# open project
-open_project ./${proj_dir}/${design}.xpr
-
-create_ip_run [get_files ./${proj_dir}/${design}.srcs/sources_1/ip/axi_10g_ethernet/axi_10g_ethernet.xci]
-launch_runs axi_10g_ethernet_synth_1
-wait_on_run axi_10g_ethernet_synth_1
-
-set_property synth_checkpoint_mode None \
-  [get_files ./${proj_dir}/${design}.srcs/sources_1/bd/${design}/${design}.bd]
-generate_target all \
-  [get_files ./${proj_dir}/${design}.srcs/sources_1/bd/${design}/${design}.bd]
-
-# run synthesis
-launch_runs synth_1 -jobs 4
-wait_on_run synth_1
-
-# done
-exit
+create_ip -name axi_10g_ethernet -vendor xilinx.com -library ip -version 3.1 \
+  -module_name axi_10g_ethernet
+set_property -dict [list CONFIG.Management_Interface {false} \
+  CONFIG.base_kr {BASE-R} CONFIG.SupportLevel {0} CONFIG.autonegotiation {0} \
+  CONFIG.fec {0} CONFIG.Statistics_Gathering {0} ] \
+  [get_ips axi_10g_ethernet]

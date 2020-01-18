@@ -25,18 +25,12 @@
 #
 # Description:
 #
-# Implements design.
+# Makefile to build IP cores
 
-# set some basic project infos
-set design netfpga_sume_loopback
-set proj_dir ./project
+.PHONY: clean
 
-# open project
-open_project ./${proj_dir}/${design}.xpr
+all:
+	for ip in ./*/; do make -C $${ip}; done
 
-# run implementation and generate bitstream
-launch_runs impl_1 -to_step write_bitstream
-wait_on_run impl_1
-
-# done
-exit
+clean:
+	for ip in ./*/; do make -C $${ip} clean; done

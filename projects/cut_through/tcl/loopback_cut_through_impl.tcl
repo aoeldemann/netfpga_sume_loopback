@@ -25,11 +25,18 @@
 #
 # Description:
 #
-# XSDB script to load bitstream to FPGA via Xilinx HW Server. Environment
-# variable $FPGA_HOST must be set to the hostname or IP address of the computer
-# running the HW server. By default, the HW server listens on port 3121.
+# Implements design.
 
-connect -host $::env(FPGA_HOST) -port 3121
-targets -set  -filter {name == "xc7vx690t"}
-fpga -file ./project/netfpga_sume_loopback.runs/impl_1/netfpga_sume_loopback_wrapper.bit
+# set some basic project infos
+set design loopback_cut_through
+set proj_dir ./project
+
+# open project
+open_project ./${proj_dir}/${design}.xpr
+
+# run implementation and generate bitstream
+launch_runs impl_1 -to_step write_bitstream
+wait_on_run impl_1
+
+# done
 exit

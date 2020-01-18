@@ -25,56 +25,48 @@
 #
 # Description:
 #
-# Makefile to build hardware components
+# Makefile to build hardware project
 
-.PHONY: all ip project synth impl program clean clean-ip
+.PHONY: all project synth impl program clean
 
 all:
 	@echo "Targets:"
-	@echo " - ip"
 	@echo " - project"
 	@echo " - synth"
 	@echo " - impl"
 	@echo " - program"
 	@echo " - clean"
-	@echo " - clean-ip"
-
-ip:
-	for ip in ip/netfpga_sume_10g_if*; do make -C $${ip}; done
 
 project:
-	if ! test -f ip/netfpga_sume_10g_if/component.xml; then\
+	if ! test -f ../../ip/netfpga_sume_10g_if/component.xml; then\
 		echo "ERROR: please create netfpga_sume_10g_if ip core first";\
-	elif ! test -f ip/netfpga_sume_10g_if_shared/component.xml; then\
+	elif ! test -f ../../ip/netfpga_sume_10g_if_shared/component.xml; then\
 		echo "ERROR: please create netfpga_sume_10g_if_shared ip core first";\
 	elif test -d project; then\
 		echo "ERROR: project already exists";\
 	else \
-		vivado -mode batch -source tcl/netfpga_sume_loopback_create.tcl;\
+		vivado -mode batch -source tcl/loopback_store_and_forward_create.tcl;\
 	fi;\
 
 synth:
 	if ! test -d project/; then\
 		echo "ERROR: project does not exist";\
 	fi;\
-	vivado -mode batch -source tcl/netfpga_sume_loopback_synth.tcl
+	vivado -mode batch -source tcl/loopback_store_and_forward_synth.tcl
 
 impl:
 	if ! test -d project/; then\
 		echo "ERROR: project does not exist";\
 	fi;\
-	vivado -mode batch -source tcl/netfpga_sume_loopback_impl.tcl
+	vivado -mode batch -source tcl/loopback_store_and_forward_impl.tcl
 
 
 program:
-	if ! test -f project/netfpga_sume_loopback.runs/impl_1/netfpga_sume_loopback_wrapper.bit; then\
+	if ! test -f project/loopback_store_and_forward.runs/impl_1/loopback_store_and_forward_wrapper.bit; then\
 		echo "ERROR: bitstream does not exist";\
 	else \
-		xsdb tcl/netfpga_sume_loopback_program.tcl;\
+		xsdb tcl/loopback_store_and_forward_program.tcl;\
 	fi;\
 
 clean:
 	rm -rf project/ vivado* .Xil/ ip_repo/
-
-clean-ip:
-	for ip in ip/*; do make -C $${ip} clean; done
